@@ -28,10 +28,10 @@ public class SimpleWorkflowImpl implements ISimpleWorkflow {
 
         String afterFirst = simpleActivities.firstStep(param);
         logger.info(format(
-                "imple workflow after first step: {0}, thread: {1}", afterFirst, Thread.currentThread().getName()));
+                "Simple workflow after first step: {0}, thread: {1}", afterFirst, Thread.currentThread().getName()));
         String afterSecond = simpleActivities.secondStep(afterFirst);
         logger.info(format(
-                "imple workflow after second step: {0}, thread: {1}", afterSecond, Thread.currentThread().getName()));
+                "Simple workflow after second step: {0}, thread: {1}", afterSecond, Thread.currentThread().getName()));
 
         return afterSecond;
     }

@@ -16,7 +16,8 @@ public class SimpleWorkflowImpl implements ISimpleWorkflow {
     private static Logger logger = LoggerFactory.getLogger(SimpleWorkflowImpl.class);
 
     private ActivityOptions ACTIVITY_OPTIONS = ActivityOptions.newBuilder()
-            .setScheduleToCloseTimeout(Duration.ofSeconds(10))
+            .setScheduleToCloseTimeout(Duration.ofDays(1))
+            .setHeartbeatTimeout(Duration.ofSeconds(3))
             .build();
 
     private final ISimpleActivities simpleActivities = Workflow.newActivityStub(ISimpleActivities.class, ACTIVITY_OPTIONS);

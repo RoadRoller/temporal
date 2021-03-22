@@ -7,14 +7,20 @@ import io.temporal.client.WorkflowClient;
 import io.temporal.serviceclient.WorkflowServiceStubs;
 import io.temporal.worker.Worker;
 import io.temporal.worker.WorkerFactory;
+import io.temporal.worker.WorkerOptions;
 
 public class WorkerApplication {
+
+    private static final WorkerOptions WORKER_OPTIONS = WorkerOptions.newBuilder()
+            .setMaxConcurrentActivityExecutionSize(1)
+            .validateAndBuildWithDefaults();
+
     public static void main(String[] args) {
         WorkflowServiceStubs service = WorkflowServiceStubs.newInstance();
         WorkflowClient client = WorkflowClient.newInstance(service);
 
         WorkerFactory workerFactory = WorkerFactory.newInstance(client);
-        Worker worker = workerFactory.newWorker(IMainTaskQueue.MAIN_TASK_QUEUE);
+        Worker worker = workerFactory.newWorker(IMainTaskQueue.MAIN_TASK_QUEUE, WORKER_OPTIONS);
 
         worker.registerWorkflowImplementationTypes(SimpleWorkflowImpl.class);
         worker.registerActivitiesImplementations(new SimpleActivitiesImpl());

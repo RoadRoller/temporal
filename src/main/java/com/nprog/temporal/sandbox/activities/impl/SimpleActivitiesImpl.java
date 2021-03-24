@@ -5,6 +5,8 @@ import io.temporal.activity.Activity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
+
 import static java.text.MessageFormat.format;
 
 public class SimpleActivitiesImpl implements ISimpleActivities {
@@ -14,13 +16,12 @@ public class SimpleActivitiesImpl implements ISimpleActivities {
     public String firstStep(String param) {
         logger.info(format(
                 "firstStep, param: {0}, thread: {1}", param, Thread.currentThread().getName()));
-
         try {
             int pause = Integer.parseInt(param);
             for (int i = 0; i < pause; i++) {
-                Activity.getExecutionContext().heartbeat(i);
+                Activity.getExecutionContext().heartbeat(new Date().getTime());
+                Thread.sleep(1000);
             }
-            Thread.sleep(pause * 1000);
         } catch (NumberFormatException | InterruptedException ignore) {
         }
 

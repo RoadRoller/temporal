@@ -14,13 +14,9 @@ public class SimpleActivitiesImpl implements ISimpleActivities {
     public String firstStep(String param, int workingTime) {
         startHeartbeats();
 
-        logger.info(format(
-                "firstStep, param: {0}, thread: {1}", param, Thread.currentThread().getName()));
-
+        logger.info(format("firstStep, param: {0}, thread: {1}", param, Thread.currentThread().getName()));
         sleepSeconds(workingTime);
-
-        logger.info(format(
-                "firstStep finished, param: {0}, thread: {1}", param, Thread.currentThread().getName()));
+        logger.info(format("firstStep finished, param: {0}, thread: {1}", param, Thread.currentThread().getName()));
 
         return "First step: " + param;
     }
@@ -30,12 +26,21 @@ public class SimpleActivitiesImpl implements ISimpleActivities {
         startHeartbeats();
 
         logger.info(format("secondStep, param: {0}, thread: {1}", param, Thread.currentThread().getName()));
-
         sleepSeconds(workingTime);
-
         logger.info(format("secondStep finished, param: {0}, thread: {1}", param, Thread.currentThread().getName()));
 
         return "Second step: " + param;
+    }
+
+    @Override
+    public String simulateTask(String taskName, int workingTime) {
+        startHeartbeats();
+
+        logger.info(format("Simulate task {0} started", taskName));
+        sleepSeconds(workingTime);
+        logger.info(format("Simulate task {0} completed", taskName));
+
+        return taskName;
     }
 
     private void sleepSeconds(int seconds) {

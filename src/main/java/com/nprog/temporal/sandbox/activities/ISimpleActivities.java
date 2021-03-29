@@ -10,4 +10,7 @@ public interface ISimpleActivities {
 
     @ActivityMethod
     String secondStep(String param, int workingTime);
+
+    @ActivityMethod
+    String simulateTask(String taskName, int workingTime);
 }

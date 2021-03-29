@@ -2,8 +2,10 @@ package com.nprog.temporal.sandbox;
 
 import com.nprog.temporal.sandbox.activities.impl.SimpleActivitiesImpl;
 import com.nprog.temporal.sandbox.config.IMainTaskQueue;
+import com.nprog.temporal.sandbox.workflows.impl.NormalWorkflowImpl;
 import com.nprog.temporal.sandbox.workflows.impl.ParallelWorkflowImpl;
 import com.nprog.temporal.sandbox.workflows.impl.SimpleWorkflowImpl;
+import com.nprog.temporal.sandbox.workflows.impl.TumorWorkflowImpl;
 import io.temporal.client.WorkflowClient;
 import io.temporal.serviceclient.WorkflowServiceStubs;
 import io.temporal.worker.Worker;
@@ -26,7 +28,9 @@ public class WorkerApplication {
         worker.registerActivitiesImplementations(new SimpleActivitiesImpl());
         worker.registerWorkflowImplementationTypes(
                 SimpleWorkflowImpl.class,
-                ParallelWorkflowImpl.class
+                ParallelWorkflowImpl.class,
+                TumorWorkflowImpl.class,
+                NormalWorkflowImpl.class
         );
 
         workerFactory.start();

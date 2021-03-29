@@ -3,6 +3,7 @@ package com.nprog.temporal.sandbox.workflows.impl;
 import com.nprog.temporal.sandbox.activities.ISimpleActivities;
 import com.nprog.temporal.sandbox.workflows.IParallelWorkflow;
 import io.temporal.activity.ActivityOptions;
+import io.temporal.common.RetryOptions;
 import io.temporal.workflow.Async;
 import io.temporal.workflow.Promise;
 import io.temporal.workflow.Workflow;
@@ -20,6 +21,9 @@ public class ParallelWorkflowImpl implements IParallelWorkflow {
     private ActivityOptions ACTIVITY_OPTIONS = ActivityOptions.newBuilder()
             .setScheduleToCloseTimeout(Duration.ofDays(1))
             .setHeartbeatTimeout(Duration.ofSeconds(3))
+            .setRetryOptions(RetryOptions.newBuilder()
+                    .setMaximumAttempts(3)
+                    .build())
             .build();
 
     private final ISimpleActivities simpleActivities = Workflow.newActivityStub(ISimpleActivities.class, ACTIVITY_OPTIONS);

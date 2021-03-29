@@ -3,6 +3,7 @@ package com.nprog.temporal.sandbox.workflows.impl;
 import com.nprog.temporal.sandbox.activities.ISimpleActivities;
 import com.nprog.temporal.sandbox.workflows.ISimpleWorkflow;
 import io.temporal.activity.ActivityOptions;
+import io.temporal.common.RetryOptions;
 import io.temporal.workflow.Workflow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,9 @@ public class SimpleWorkflowImpl implements ISimpleWorkflow {
     private ActivityOptions ACTIVITY_OPTIONS = ActivityOptions.newBuilder()
             .setScheduleToCloseTimeout(Duration.ofDays(1))
             .setHeartbeatTimeout(Duration.ofSeconds(3))
+            .setRetryOptions(RetryOptions.newBuilder()
+                    .setMaximumAttempts(3)
+                    .build())
             .build();
 
     private final ISimpleActivities simpleActivities = Workflow.newActivityStub(ISimpleActivities.class, ACTIVITY_OPTIONS);

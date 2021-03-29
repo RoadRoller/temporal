@@ -5,25 +5,19 @@ import io.temporal.activity.Activity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Date;
-
 import static java.text.MessageFormat.format;
 
 public class SimpleActivitiesImpl implements ISimpleActivities {
-    protected static Logger logger = LoggerFactory.getLogger(SimpleActivitiesImpl.class);
+    private static Logger logger = LoggerFactory.getLogger(SimpleActivitiesImpl.class);
 
     @Override
-    public String firstStep(String param) {
+    public String firstStep(String param, int workingTime) {
+        startHeartbeats();
+
         logger.info(format(
                 "firstStep, param: {0}, thread: {1}", param, Thread.currentThread().getName()));
-        try {
-            int pause = Integer.parseInt(param);
-            for (int i = 0; i < pause; i++) {
-                Activity.getExecutionContext().heartbeat(new Date().getTime());
-                Thread.sleep(1000);
-            }
-        } catch (NumberFormatException | InterruptedException ignore) {
-        }
+
+        sleepSeconds(workingTime);
 
         logger.info(format(
                 "firstStep finished, param: {0}, thread: {1}", param, Thread.currentThread().getName()));
@@ -32,10 +26,26 @@ public class SimpleActivitiesImpl implements ISimpleActivities {
     }
 
     @Override
-    public String secondStep(String param) {
-        logger.info(format(
-                "secondStep, param: {0}, thread: {1}", param, Thread.currentThread().getName()));
+    public String secondStep(String param, int workingTime) {
+        startHeartbeats();
+
+        logger.info(format("secondStep, param: {0}, thread: {1}", param, Thread.currentThread().getName()));
+
+        sleepSeconds(workingTime);
+
+        logger.info(format("secondStep finished, param: {0}, thread: {1}", param, Thread.currentThread().getName()));
 
         return "Second step: " + param;
+    }
+
+    private void sleepSeconds(int seconds) {
+        try {
+            Thread.sleep(seconds * 1000);
+        } catch (InterruptedException ignore) {
+        }
+    }
+
+    private void startHeartbeats() {
+        new ActivityHeartbeat(Activity.getExecutionContext(), 1000);
     }
 }

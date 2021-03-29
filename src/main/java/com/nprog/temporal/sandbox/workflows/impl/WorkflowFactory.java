@@ -1,6 +1,7 @@
 package com.nprog.temporal.sandbox.workflows.impl;
 
 import com.nprog.temporal.sandbox.config.IMainTaskQueue;
+import com.nprog.temporal.sandbox.workflows.IParallelWorkflow;
 import com.nprog.temporal.sandbox.workflows.ISimpleWorkflow;
 import com.nprog.temporal.sandbox.workflows.IWorkflowFactory;
 import io.temporal.client.WorkflowClient;
@@ -17,10 +18,18 @@ public class WorkflowFactory implements IWorkflowFactory {
 
     @Override
     public ISimpleWorkflow createSimpleWorkflow() {
-        WorkflowOptions workflowOptions = WorkflowOptions.newBuilder()
+        return workflowClient.newWorkflowStub(ISimpleWorkflow.class, buildOptions());
+    }
+
+    @Override
+    public IParallelWorkflow createParallelWorkflow() {
+        return workflowClient.newWorkflowStub(IParallelWorkflow.class, buildOptions());
+    }
+
+    private WorkflowOptions buildOptions() {
+        return WorkflowOptions.newBuilder()
                 .setTaskQueue(IMainTaskQueue.MAIN_TASK_QUEUE)
                 .setWorkflowId(UUID.randomUUID().toString())
                 .build();
-        return workflowClient.newWorkflowStub(ISimpleWorkflow.class, workflowOptions);
     }
 }

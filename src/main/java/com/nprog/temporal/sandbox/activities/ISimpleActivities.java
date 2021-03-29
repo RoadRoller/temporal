@@ -6,8 +6,8 @@ import io.temporal.activity.ActivityMethod;
 @ActivityInterface
 public interface ISimpleActivities {
     @ActivityMethod
-    String firstStep(String param);
+    String firstStep(String param, int workingTime);
 
     @ActivityMethod
-    String secondStep(String param);
+    String secondStep(String param, int workingTime);
 }
